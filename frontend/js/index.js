@@ -32,7 +32,10 @@ document.addEventListener('DOMContentLoaded', async function() {
 
             const calificarTd = document.createElement('td');
             const link = document.createElement('a');
-            link.href = "#";
+            link.href = "recomendaciones.html?profesor_id=" + profesor.id + 
+            "&profesor_apellidos=" + profesor.apellidos.replace(' ', '_') + 
+            "&profesor_nombres=" + profesor.nombres.replace(' ', '_');
+
             link.textContent = 'Calificar';
             link.classList.add('calificar-link');
             calificarTd.appendChild(link);
