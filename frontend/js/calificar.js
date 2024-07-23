@@ -25,6 +25,16 @@ const postReview = async function(review){
 };
 
 document.addEventListener('DOMContentLoaded', function(){
+    const li = document.createElement('li');
+    const link = document.createElement('a');
+    link.href = "recomendaciones.html?profesor_id=" + profesorId+ 
+                "&profesor_apellidos=" + profesorApellidos + 
+                "&profesor_nombres=" + profesorNombres;
+    link.textContent = 'Volver';
+    link.classList.add('volver');
+    li.appendChild(link);
+    document.querySelector('nav ul').appendChild(li);
+
     document.querySelector('.form-container h2').textContent = 'Calificar a ' + 
     profesorApellidos.replace('_', ' ') + ', ' + 
     profesorNombres.replace('_', ' ');
