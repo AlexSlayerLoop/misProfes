@@ -75,34 +75,25 @@ main {
     color: #666;
 }
 
-.reviews {
-    margin-top: 20px;
+.reviews-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
 }
 
-.review {
+.reviews-table th, .reviews-table td {
     border: 1px solid #ddd;
     padding: 10px;
-    border-radius: 4px;
-    margin-bottom: 10px;
+    text-align: left;
 }
 
-.review h4 {
-    margin: 0 0 10px;
-    font-size: 18px;
-    color: #003366;
+.reviews-table tr:nth-child(even) {
+    background-color: #f2f2f2;
 }
 
-.review p {
-    margin: 0 0 10px;
-    font-size: 16px;
-    color: #333;
+.reviews-table tr:hover {
+    background-color: #ddd;
 }
-
-.rating {
-    font-size: 14px;
-    color: #555;
-}
-
 
 footer {
     background-color: #003366;

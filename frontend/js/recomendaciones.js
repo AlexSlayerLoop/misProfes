@@ -21,23 +21,23 @@ document.addEventListener('DOMContentLoaded', async function() {
     document.querySelector('#profesor-nombre').textContent = profesorApellidos.replace('_', ' ') + ', ' + profesorNombres.replace('_', ' ');
     const recomendaciones = await fetchRecomendaciones(profesorId);
     if(recomendaciones) {
+        const tableBody = document.querySelector('.reviews-table tbody');
         recomendaciones.forEach((recomendacion) => {
-            const reviewDiv = document.createElement('div');
-            reviewDiv.className = 'review';
+            const row = document.createElement('tr');
 
-            const comentario = document.createElement('p');
-            comentario.textContent = recomendacion.comentario;
-            reviewDiv.appendChild(comentario);
+            const comentarioTd = document.createElement('td');
+            comentarioTd.textContent = recomendacion.comentario;
+            row.appendChild(comentarioTd);
 
-            const calificacionDiv = document.createElement('div');
-            calificacionDiv.className = 'rating';
-            const calificacionSpan = document.createElement('span');
-            calificacionSpan.textContent = recomendacion.calificacion;
-            calificacionDiv.appendChild(calificacionSpan);
-            reviewDiv.appendChild(calificacionDiv);
+            const calificacionTd = document.createElement('td');
+            calificacionTd.textContent = recomendacion.calificacion;
+            row.appendChild(calificacionTd);
 
-            const reviews = document.querySelector('.reviews');
-            reviews.appendChild(reviewDiv);
+            const facilidadTd = document.createElement('td');
+            facilidadTd.textContent = recomendacion.facilidad;
+            row.appendChild(facilidadTd);
+
+            tableBody.appendChild(row);
         });
     }
 });
