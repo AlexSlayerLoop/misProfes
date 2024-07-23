@@ -1,0 +1,103 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+header {
+    background-color: #003366;
+    color: white;
+    padding: 20px 0;
+}
+
+header h1 {
+    margin: 0;
+    display: inline-block;
+}
+
+nav {
+    float: right;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-left: 20px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+nav ul li a {
+    background-color: #ff9900;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+main {
+    flex: 1; /* This makes the main content take up the remaining space */
+    background-color: white;
+    padding: 20px 0;
+}
+
+.profesor-info {
+    margin-bottom: 20px;
+}
+
+.profesor-info h3 {
+    margin: 0;
+    font-size: 24px;
+    color: #003366;
+}
+
+.profesor-info p {
+    margin: 0;
+    font-size: 18px;
+    color: #666;
+}
+
+.reviews-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.reviews-table th, .reviews-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.reviews-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.reviews-table tr:hover {
+    background-color: #ddd;
+}
+
+footer {
+    background-color: #003366;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+}

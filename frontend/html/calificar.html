@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calificar Profesor</title>
+    <link rel="stylesheet" href="../assets/css/calificar.css">
+    <link rel="icon" href="data:,"> 
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>CUCEI</h1>
+            <nav>
+                <ul>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <div class="form-container">
+                <h2></h2>
+                <form id="calificar-profesor-form">
+                    <div class="form-group">
+                        <label for="comentarios">Escribe tus comentarios sobre este profesor:</label>
+                        <textarea id="comentarios" name="comentarios", rows="4", cols="50" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="calificacion">Que calificacion le das a este profesor:</label>
+                        <input type="number" min="1" max="10" id="calificacion" name="calificacion" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="facilidad">Que tan facil consideras su clase:</label>
+                        <input type="number" min="1" max="10" id="facilidad" name="facilidad" required>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit">Calificar Profesor</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Mis Profesores - CUCEI</p>
+        </div>
+    </footer>
+
+    <script src="../js/calificar.js"></script>
+</body>
+</html>
