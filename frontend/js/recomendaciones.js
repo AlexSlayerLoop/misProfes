@@ -18,7 +18,19 @@ const fetchRecomendaciones = async function(profesorId) {
 };
 
 document.addEventListener('DOMContentLoaded', async function() {
+    //Crear boton para calificar al profesor
+    const calificarLink = document.createElement('a');
+    calificarLink.href = "calificar.html?profesor_id=" + profesorId + 
+            "&profesor_apellidos=" + profesorApellidos.replace(' ', '_') + 
+            "&profesor_nombres=" + profesorNombres.replace(' ', '_');
+    calificarLink.textContent = 'Calificar';
+    calificarLink.classList.add('calificar-profesor');
+    const li = document.createElement('li');
+    li.appendChild(calificarLink);
+    document.querySelector('nav ul').appendChild(li);
+
     document.querySelector('#profesor-nombre').textContent = profesorApellidos.replace('_', ' ') + ', ' + profesorNombres.replace('_', ' ');
+    
     const recomendaciones = await fetchRecomendaciones(profesorId);
     if(recomendaciones) {
         const tableBody = document.querySelector('.reviews-table tbody');
