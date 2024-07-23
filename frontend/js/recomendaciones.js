@@ -14,7 +14,7 @@ const fetchRecomendaciones = async function(profesorId) {
         return data;
     } catch (error) {
         console.error(error);
-    }link.href = "recomendaciones.html?profesor_id=" + profesor.id + "?profesor_apellidos=" + profesor.apellidos.replace(' ', '_')  + "?profesor_nombres=" + profesor.nombres.replace(' ', '_');
+    }
 };
 
 document.addEventListener('DOMContentLoaded', async function() {
