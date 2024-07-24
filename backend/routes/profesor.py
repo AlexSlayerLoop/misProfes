@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from sqlalchemy import func, String
 from typing import List, Optional
-from models import Profesor as ProfesorModel
+from models import Profesor as ProfesorModel, Recomendacion as RecomendacionModel
 from schemas.profesor import Profesor, ProfesorCreate
 from db import SessionLocal
 
@@ -19,9 +20,21 @@ def get_db():
 
 @router.get("/profesores/", response_model=List[Profesor])
 async def read_profesores(skip: int = 0, limit: Optional[int] = None, db: Session = Depends(get_db)):
-    query = db.query(ProfesorModel).offset(skip)
+    query = db.query(
+        ProfesorModel.id,
+        ProfesorModel.nombres,
+        ProfesorModel.apellidos,
+        func.coalesce(
+            func.round(
+                func.avg(RecomendacionModel.calificacion), 
+            2).cast(String),
+        'None').label('promedio')
+    ).outerjoin(RecomendacionModel, ProfesorModel.id == RecomendacionModel.id_profesor
+    ).group_by(ProfesorModel.id, ProfesorModel.nombres, ProfesorModel.apellidos).offset(skip)
+
     if limit:
         query = query.limit(limit)
+
     profesores = query.all()
     return profesores
 

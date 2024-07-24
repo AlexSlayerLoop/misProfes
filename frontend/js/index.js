@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             row.appendChild(nombresTd);
 
             const promedioTd = document.createElement('td');
-            promedioTd.textContent = 'N/A';
+            promedioTd.textContent = profesor.promedio;
             row.appendChild(promedioTd);
 
             const calificarTd = document.createElement('td');
