@@ -14,7 +14,8 @@ class ProfesorCreate(ProfesorBase):
 class Profesor(ProfesorBase):
     id: int
     promedio: Optional[str] = None
-
+    facilidad: Optional[str] = None
+    
     class Config:
         orm_mode = True
         
