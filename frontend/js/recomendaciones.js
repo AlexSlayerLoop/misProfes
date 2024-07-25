@@ -17,6 +17,19 @@ const fetchRecomendaciones = async function(profesorId) {
     }
 };
 
+const fetchProfesor = async function(profesorId) {
+    try {
+        const response = await fetch('http://localhost:8000/profesores/' + profesorId)
+        if (!response.ok) {
+            throw new Error('Respuesta de red incorrecta.Estado: ' + response.status);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
 document.addEventListener('DOMContentLoaded', async function() {
     //Crear boton para calificar al profesor
     const calificarLink = document.createElement('a');
@@ -29,7 +42,15 @@ document.addEventListener('DOMContentLoaded', async function() {
     li.appendChild(calificarLink);
     document.querySelector('nav ul').appendChild(li);
 
+    //Mostrar el nombre del profesor
     document.querySelector('#profesor-nombre').textContent = profesorApellidos.replace('_', ' ') + ', ' + profesorNombres.replace('_', ' ');
+
+    //Mostrar las metricas del profesor
+    const profesor = await fetchProfesor(profesorId);
+    if(profesor) {
+        document.querySelector('.calidad-general .grade').textContent = profesor.promedio === 'None' ? '' : profesor.promedio;
+        document.querySelector('.dificultad .grade').textContent = profesor.facilidad === 'None' ? '' : profesor.facilidad;
+    }
     
     const recomendaciones = await fetchRecomendaciones(profesorId);
     if(recomendaciones) {
