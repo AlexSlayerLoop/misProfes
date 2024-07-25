@@ -75,6 +75,19 @@ main {
     color: #666;
 }
 
+.profesor-metrics {
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.profesor-metrics div {
+    margin-bottom: 10px;
+}
+
+.grade {
+    font-weight: bold;
+}
+
 .reviews-table {
     width: 100%;
     border-collapse: collapse;
