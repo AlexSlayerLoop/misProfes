@@ -88,6 +88,37 @@ main {
     font-weight: bold;
 }
 
+.profesor-etiquetas {
+    margin-bottom: 20px;
+}
+
+.profesor-etiquetas h4 {
+    margin-bottom: 10px;
+}
+
+#etiquetas-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#etiquetas-container .etiqueta {
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin: 5px;
+    display: flex;
+    align-items: center;
+}
+
+#etiquetas-container .etiqueta .descripcion {
+    margin-right: 5px;
+    font-weight: bold;
+}
+
+#etiquetas-container .etiqueta .contador {
+    color: #555;
+}
+
 .reviews-table {
     width: 100%;
     border-collapse: collapse;
