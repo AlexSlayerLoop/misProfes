@@ -16,6 +16,15 @@ def get_db():
     finally:
         db.close()
         
+        
+    
+@router.get("/etiqueta/{etiqueta_id}", response_model=Etiqueta)
+async def read_etiqueta(etiqueta_id: int, db: Session = Depends(get_db)):
+    etiqueta = db.query(EtiquetaModel).filter(EtiquetaModel.id == etiqueta_id).first()
+    if etiqueta is None:
+        raise HTTPException(status_code=404, detail="Etiqueta not found")
+    return etiqueta    
+    
 
 @router.get("/etiquetas/", response_model=List[Etiqueta])
 async def read_etiquetas(skip: int = 0, limit: Optional[int] = None, db: Session = Depends(get_db)):
