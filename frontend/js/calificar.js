@@ -37,6 +37,29 @@ const fetchEtiquetas = async function(){
     }
 };
 
+const postEtiquetasRecomendaciones = async function(etiquetas, recomendacionId){
+    for(const etiqueta of etiquetas){
+        try{
+            const options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    id_etiqueta: Number(etiqueta),
+                    id_recomendacion: Number(recomendacionId)
+                })
+            };
+            const response = await fetch(`http://localhost:8000/etiquetas_recomendaciones/`, options);
+            if(!response.ok){
+                throw new Error('Respuesta de red incorrecta.Estado: ' + response.status);
+            }
+        } catch(error){
+            console.log(error);
+        }
+    }
+};
+
 document.addEventListener('DOMContentLoaded', async function(){
     //Agregar link para volver a la página de recomendaciones
     const li = document.createElement('li');
@@ -63,6 +86,8 @@ document.addEventListener('DOMContentLoaded', async function(){
             label.textContent = etiqueta.descripcion;
             const input = document.createElement('input');
             input.type = 'checkbox';
+            input.classList.add('etiqueta-checkbox');
+            input.id = etiqueta.id;
             label.appendChild(input);
             etiquetasContainer.appendChild(label);
         });
@@ -79,15 +104,32 @@ document.addEventListener('DOMContentLoaded', async function(){
             calificacion: calificaion,
             facilidad: facilidad
         };
+        
+        let response;
+        let recomendacionId;
+
         try{
-            const response = await postReview(review);
-            if(response){
-                window.location.href = "recomendaciones.html?profesor_id=" + profesorId+ 
-                "&profesor_apellidos=" + profesorApellidos + 
-                "&profesor_nombres=" + profesorNombres;
-            }
+            response = await postReview(review);
+            recomendacionId = response.id;
         } catch(error){
             console.log(error);
         }
+        
+        const etiquetasSeleccionadas = [];
+        document.querySelectorAll('.etiqueta-checkbox:checked').forEach(etiqueta => {
+            etiquetasSeleccionadas.push(etiqueta.id);
+        });
+
+        if(etiquetasSeleccionadas){
+            try{
+                recomendacionId = response.id;
+                response = await postEtiquetasRecomendaciones(etiquetasSeleccionadas, recomendacionId);
+            } catch(error){
+                console.log(error);
+            }
+        }
+        window.location.href = "recomendaciones.html?profesor_id=" + profesorId+ 
+                        "&profesor_apellidos=" + profesorApellidos + 
+                        "&profesor_nombres=" + profesorNombres;
     });
 });

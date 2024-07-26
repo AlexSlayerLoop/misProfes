@@ -6,6 +6,7 @@ from routes.profesor import router as profesor_router
 from routes.materia import router as materia_router
 from routes.etiqueta import router as etiqueta_router
 from routes.recomendacion import router as recomendacion_router
+from routes.etiqueta_recomendacion import router as etiqueta_recomendacion_router
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -16,7 +17,8 @@ app = FastAPI()
 app.include_router(profesor_router)
 app.include_router(materia_router)
 app.include_router(etiqueta_router)
-app.include_router(recomendacion_router)  
+app.include_router(recomendacion_router)
+app.include_router(etiqueta_recomendacion_router)
 
 
 origins = ["http://127.0.0.1:5500"]
