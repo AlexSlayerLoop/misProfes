@@ -104,6 +104,26 @@ main {
     background-color: #002244;
 }
 
+#etiquetas-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+#etiquetas-container label {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+}
+
+#etiquetas-container input[type="checkbox"] {
+    margin-right: 5px;
+}
+
 footer {
     background-color: #003366;
     color: white;

@@ -30,6 +30,32 @@ const fetchProfesor = async function(profesorId) {
     }
 };
 
+const fetchEtiquetasByRecomendacion = async function(recomendacionId) {
+    try {
+        const response = await fetch('http://localhost:8000/etiquetas_recomendaciones/' + recomendacionId);
+        if (!response.ok) {
+            throw new Error('Respuesta de red incorrecta.Estado: ' + response.status);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const fetchEtiqueta = async function(etiquetaId) {
+    try {
+        const response = await fetch('http://localhost:8000/etiqueta/' + etiquetaId);
+        if (!response.ok) {
+            throw new Error('Respuesta de red incorrecta.Estado: ' + response.status);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
 document.addEventListener('DOMContentLoaded', async function() {
     //Crear boton para calificar al profesor
     const calificarLink = document.createElement('a');
@@ -52,6 +78,9 @@ document.addEventListener('DOMContentLoaded', async function() {
         document.querySelector('.dificultad .grade').textContent = profesor.facilidad === 'None' ? '' : profesor.facilidad;
     }
     
+    //Otener los ids de cada recomendacion
+    const recomendacionesIds = [];
+
     const recomendaciones = await fetchRecomendaciones(profesorId);
     if(recomendaciones) {
         const tableBody = document.querySelector('.reviews-table tbody');
@@ -71,6 +100,40 @@ document.addEventListener('DOMContentLoaded', async function() {
             row.appendChild(facilidadTd);
 
             tableBody.appendChild(row);
+
+            recomendacionesIds.push(recomendacion.id);
         });
+    }
+    
+    if (recomendacionesIds) {
+        const etiquetasCount = new Map();
+        for(const recomendacionId of recomendacionesIds) {
+            const etiquetasRecomendaciones = await fetchEtiquetasByRecomendacion(recomendacionId);
+            for(const etiquetaRecomendacion of etiquetasRecomendaciones) {
+                if (etiquetasCount.has(etiquetaRecomendacion.id_etiqueta)) {
+                    etiquetasCount.set(etiquetaRecomendacion.id_etiqueta, etiquetasCount.get(etiquetaRecomendacion.id_etiqueta) + 1);
+                } else {
+                    etiquetasCount.set(etiquetaRecomendacion.id_etiqueta, 1);
+                }
+            }
+        }
+        for(const [etiquetaId, count] of etiquetasCount) {
+            const etiqueta = await fetchEtiqueta(etiquetaId);
+
+            const etiquetaDiv = document.createElement('div');
+            etiquetaDiv.classList.add('etiqueta');
+
+            const descripcionSpan = document.createElement('span');
+            descripcionSpan.textContent = etiqueta.descripcion;
+            descripcionSpan.classList.add('descripcion');
+            etiquetaDiv.appendChild(descripcionSpan);
+
+            const contadorSpan = document.createElement('span');
+            contadorSpan.textContent = '(' + count + ')';
+            contadorSpan.classList.add('contador');
+            etiquetaDiv.appendChild(contadorSpan);
+
+            document.querySelector('#etiquetas-container').appendChild(etiquetaDiv);
+        }
     }
 });
