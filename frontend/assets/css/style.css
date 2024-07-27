@@ -59,6 +59,17 @@ main {
     padding: 20px 0;
 }
 
+.search-container {
+    margin-bottom: 20px;
+}
+
+#search-input {
+    width: 20%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
 .profesor-table {
     width: 100%;
     border-collapse: collapse;
