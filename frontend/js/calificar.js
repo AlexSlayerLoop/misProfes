@@ -60,6 +60,19 @@ const postEtiquetasRecomendaciones = async function(etiquetas, recomendacionId){
     }
 };
 
+const fetchMaterias = async function(){
+    try{
+        const response = await fetch('http://localhost:8000/materias');
+        if(!response.ok){
+            throw new Error('Respuesta de red incorrecta.Estado: ' + response.status);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error){
+        console.error(error);
+    }
+};
+
 document.addEventListener('DOMContentLoaded', async function(){
     //Agregar link para volver a la página de recomendaciones
     const li = document.createElement('li');
@@ -76,6 +89,19 @@ document.addEventListener('DOMContentLoaded', async function(){
     document.querySelector('.form-container h2').textContent = 'Calificar a ' + 
     profesorApellidos.replace('_', ' ') + ', ' + 
     profesorNombres.replace('_', ' ');
+
+    // Agregar materias al input tipo select para seleccionar la materia que el
+    // profesor impartio al usuario que lo esta calificando
+    const materias = await fetchMaterias();
+    if(materias){
+        const selectMateriaInput = document.querySelector('#materia');
+        materias.forEach(materia => {
+            const option = document.createElement('option');
+            option.value = materia.id;
+            option.textContent = materia.nombre;
+            selectMateriaInput.appendChild(option);
+        });
+    }
 
     //Mostrar las etiquetas
     const etiquetas = await fetchEtiquetas();
