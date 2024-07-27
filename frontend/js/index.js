@@ -11,6 +11,19 @@ const fetchProfesores = async function() {
     }
 };
 
+const filterResults = function(query) {
+    const rows = document.querySelectorAll('.profesor-table tbody tr');
+    rows.forEach(row => {
+        const apellidos = row.cells[0].textContent.toLowerCase();
+        const nombres = row.cells[1].textContent.toLowerCase();
+        if(apellidos.includes(query) || nombres.includes(query)) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+};
+
 document.addEventListener('DOMContentLoaded', async function() {
     const profesores = await fetchProfesores();
     if(profesores) {
@@ -42,6 +55,11 @@ document.addEventListener('DOMContentLoaded', async function() {
             row.appendChild(calificarTd);
 
             tableBody.appendChild(row);
+        });
+
+        document.getElementById('search-input').addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            filterResults(query);
         });
     }
 });
