@@ -25,3 +25,12 @@ async def create_materia_profesor(materia_profesor: MateriaProfesorCreate, db: S
     db.commit()
     db.refresh(db_materia_profesor)
     return db_materia_profesor
+
+
+@router.get("/materias_profesores/{clave_materia}", response_model=List[MateriaProfesor])
+async def read_materias_profesores(clave_materia: str, skip: int = 0, limit: Optional[int] = 0, db: Session = Depends(get_db)):
+    query = db.query(MateriaProfesorModel).filter(MateriaProfesorModel.clave_materia == clave_materia)
+    if limit:
+        query = query.limit(limit)
+    materias_profesores = query.offset(skip).all()
+    return materias_profesores
