@@ -73,6 +73,28 @@ const fetchMaterias = async function(){
     }
 };
 
+const postMateriaProfesor = async function(materiaId, profesorId){
+    try{
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                clave_materia: materiaId,
+                id_profesor: Number(profesorId)
+            })
+        };
+        const response = await fetch('http://localhost:8000/materias_profesores/', options);
+        if(!response.ok){
+            throw new Error('Respuesta de red incorrecta.Estado: ' + response.status);
+        }
+    } catch(error){
+        console.log(error);
+    }
+
+};
+
 document.addEventListener('DOMContentLoaded', async function(){
     //Agregar link para volver a la página de recomendaciones
     const li = document.createElement('li');
@@ -97,7 +119,7 @@ document.addEventListener('DOMContentLoaded', async function(){
         const selectMateriaInput = document.querySelector('#materia');
         materias.forEach(materia => {
             const option = document.createElement('option');
-            option.value = materia.id;
+            option.value = materia.clave;
             option.textContent = materia.nombre;
             selectMateriaInput.appendChild(option);
         });
@@ -122,6 +144,7 @@ document.addEventListener('DOMContentLoaded', async function(){
     const form = document.querySelector('#calificar-profesor-form');
     form.addEventListener('submit', async function(event){
         event.preventDefault();
+        
         const comentarios = document.querySelector('#comentarios').value;
         const calificaion = document.querySelector('#calificacion').value;
         const facilidad = document.querySelector('#facilidad').value;
@@ -154,6 +177,10 @@ document.addEventListener('DOMContentLoaded', async function(){
                 console.log(error);
             }
         }
+
+        const materiaSeleccionada = document.querySelector('#materia').value;
+        response = await postMateriaProfesor(materiaSeleccionada, profesorId);
+
         window.location.href = "recomendaciones.html?profesor_id=" + profesorId+ 
                         "&profesor_apellidos=" + profesorApellidos + 
                         "&profesor_nombres=" + profesorNombres;
