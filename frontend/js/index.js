@@ -103,6 +103,19 @@ const updateProfesoresTable = async function(claveMateria){
     loadProfesoresTable(profesores);
 };
 
+const filterResults = function(query) {
+    const rows = document.querySelectorAll('.profesor-table tbody tr');
+    rows.forEach(row => {
+        const apellidos = row.cells[0].textContent.toLowerCase();
+        const nombres = row.cells[1].textContent.toLowerCase();
+        if(apellidos.includes(query) || nombres.includes(query)) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+};
+
 document.addEventListener('DOMContentLoaded', async function() {
     const materias = await fetchMaterias();
     const selectMateriaInput = document.querySelector('#materia');
@@ -120,4 +133,9 @@ document.addEventListener('DOMContentLoaded', async function() {
     });
 
     await updateProfesoresTable(selectMateriaInput.value);
+  
+    document.getElementById('search-input').addEventListener('input', function() {
+        const query = this.value.toLowerCase();
+        filterResults(query);
+    });
 });
