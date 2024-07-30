@@ -59,6 +59,19 @@ main {
     padding: 20px 0;
 }
 
+.filter-container {
+    margin-bottom: 20px;
+}
+
+.filter-container label {
+    margin-right: 10px;
+}
+
+.filter-container select {
+    padding: 5px;
+    width: 20%;
+}
+
 .search-container {
     margin-bottom: 20px;
 }
