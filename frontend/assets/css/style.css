@@ -45,87 +45,15 @@ nav ul li {
 nav ul li a {
     color: white;
     text-decoration: none;
-}
-
-nav ul li a.add-profesor {
     background-color: #ff9900;
     padding: 5px 10px;
     border-radius: 4px;
 }
 
 main {
-    flex: 1; /* This makes the main content take up the remaining space */
+    flex: 1;
     background-color: white;
     padding: 20px 0;
-}
-
-.filter-container {
-    margin-bottom: 20px;
-}
-
-.filter-container label {
-    margin-right: 10px;
-}
-
-.filter-container select {
-    padding: 5px;
-    width: 20%;
-}
-
-.search-container {
-    margin-bottom: 20px;
-}
-
-#search-input {
-    width: 20%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.profesor-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-}
-
-.profesor-table th, .profesor-table td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: left;
-}
-
-.profesor-table th {
-    background-color: #003366;
-    color: white;
-}
-
-.profesor-table tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-.profesor-table tr:hover {
-    background-color: #ddd;
-}
-
-.calificar-link {
-    color: #007bff; 
-    text-decoration: none;
-    font-weight: bold;
-    padding: 5px 10px;
-    border-radius: 4px;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-.calificar-link:hover {
-    background-color: #e9ecef;
-    color: #0056b3;
-    text-decoration: underline;
-}
-
-.calificar-link:active {
-    background-color: #ced4da; 
-    color: #003d7a;
 }
 
 footer {
