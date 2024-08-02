@@ -95,6 +95,19 @@ const postMateriaProfesor = async function(materiaId, profesorId){
 
 };
 
+const existsMateriaProfesor = async function(claveMateria, profesorId){
+    try{
+        const response = await fetch(`http://localhost:8000/materias_profesores/exists/${claveMateria}/${profesorId}`);
+        if(!response.ok){
+            throw new Error('Respuesta de red incorrecta.Estado: ' + response.status);
+        }
+        const data = await response.json();
+        return data;
+    } catch(error){
+        console.log(error);
+    }
+};
+
 document.addEventListener('DOMContentLoaded', async function(){
     //Agregar link para volver a la página de recomendaciones
     const li = document.createElement('li');
@@ -179,7 +192,10 @@ document.addEventListener('DOMContentLoaded', async function(){
         }
 
         const materiaSeleccionada = document.querySelector('#materia').value;
-        response = await postMateriaProfesor(materiaSeleccionada, profesorId);
+        const registroExiste = await existsMateriaProfesor(materiaSeleccionada, profesorId);
+        if(!registroExiste){
+            response = await postMateriaProfesor(materiaSeleccionada, profesorId);
+        }
 
         window.location.href = "recomendaciones.html?profesor_id=" + profesorId+ 
                         "&profesor_apellidos=" + profesorApellidos + 
