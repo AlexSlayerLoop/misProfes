@@ -34,3 +34,13 @@ async def read_materias_profesores(clave_materia: str, skip: int = 0, limit: Opt
         query = query.limit(limit)
     materias_profesores = query.offset(skip).all()
     return materias_profesores
+
+
+@router.get("/materias_profesores/exists/{clave_materia}/{id_profesor}", response_model=bool)
+async def exists_materia_profesor(clave_materia: str, id_profesor: int, db: Session = Depends(get_db)):
+    query = db.query(MateriaProfesorModel).filter(
+        MateriaProfesorModel.clave_materia == clave_materia,
+        MateriaProfesorModel.id_profesor == id_profesor
+    )
+    exists = db.query(query.exists()).scalar()
+    return exists
