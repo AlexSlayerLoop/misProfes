@@ -161,14 +161,22 @@ document.addEventListener('DOMContentLoaded', async function(){
         const comentarios = document.querySelector('#comentarios').value;
         const calificaion = document.querySelector('#calificacion').value;
         const facilidad = document.querySelector('#facilidad').value;
+        const materiaSeleccionada = document.querySelector('#materia').value;
+
         const review = {
             comentario: comentarios,
             calificacion: calificaion,
-            facilidad: facilidad
+            facilidad: facilidad,
+            clave_materia: materiaSeleccionada
         };
+
+        const registroExiste = await existsMateriaProfesor(materiaSeleccionada, profesorId);
+        if(!registroExiste){
+            await postMateriaProfesor(materiaSeleccionada, profesorId);
+        }
         
-        let response;
         let recomendacionId;
+        let response;
 
         try{
             response = await postReview(review);
@@ -189,12 +197,6 @@ document.addEventListener('DOMContentLoaded', async function(){
             } catch(error){
                 console.log(error);
             }
-        }
-
-        const materiaSeleccionada = document.querySelector('#materia').value;
-        const registroExiste = await existsMateriaProfesor(materiaSeleccionada, profesorId);
-        if(!registroExiste){
-            response = await postMateriaProfesor(materiaSeleccionada, profesorId);
         }
 
         window.location.href = "recomendaciones.html?profesor_id=" + profesorId+ 
