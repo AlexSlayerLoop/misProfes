@@ -5,7 +5,9 @@ class RecomendacionBase(BaseModel):
     comentario: str
     calificacion: int
     facilidad: int
+    clave_materia: str
 
+    
 
 class RecomendacionCreate(RecomendacionBase):
     pass
