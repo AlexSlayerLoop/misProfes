@@ -31,6 +31,7 @@ class Recomendacion(Base):
     __tablename__ = 'recomendaciones'
     id = Column(Integer, primary_key=True, autoincrement=True)
     id_profesor = Column(Integer, ForeignKey('profesores.id'), nullable=False)
+    clave_materia = Column(String, ForeignKey('materias.clave'), nullable=False)
     comentario = Column(String, nullable=False)
     calificacion = Column(Integer, CheckConstraint('calificacion >= 0 AND calificacion <= 10'), nullable=False)
     facilidad = Column(Integer, CheckConstraint('facilidad >= 0 AND facilidad <= 10'), nullable=False)

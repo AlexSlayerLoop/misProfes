@@ -29,6 +29,7 @@ async def read_recomendaciones(profesor_id: int, db: Session = Depends(get_db)):
 @router.post("/profesor/{profesor_id}/recomendacion", response_model=Recomendacion)
 async def create_recomendacion(profesor_id: int, recomendacion: RecomendacionCreate, db: Session = Depends(get_db)):
     db_recomendacion = RecomendacionModel(id_profesor=profesor_id, 
+                                          clave_materia=recomendacion.clave_materia,
                                           comentario=recomendacion.comentario,
                                           calificacion=recomendacion.calificacion,
                                           facilidad=recomendacion.facilidad)
