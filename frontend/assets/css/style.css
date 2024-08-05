@@ -27,6 +27,11 @@ header h1 {
     display: inline-block;
 }
 
+header h1 a {
+    color: white;
+    text-decoration: none;
+}
+
 nav {
     float: right;
 }
