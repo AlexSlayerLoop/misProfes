@@ -56,6 +56,19 @@ const fetchEtiqueta = async function(etiquetaId) {
     }
 };
 
+const fetchMateria = async function(claveMateria) {
+    try {
+        const response = await fetch('http://localhost:8000/materias/' + claveMateria);
+        if (!response.ok) {
+            throw new Error('Respuesta de red incorrecta.Estado: ' + response.status);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
 document.addEventListener('DOMContentLoaded', async function() {
     //Crear boton para calificar al profesor
     const calificarLink = document.createElement('a');
@@ -84,7 +97,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const recomendaciones = await fetchRecomendaciones(profesorId);
     if(recomendaciones) {
         const tableBody = document.querySelector('.reviews-table tbody');
-        recomendaciones.forEach((recomendacion) => {
+        for (const recomendacion of recomendaciones) {
             const row = document.createElement('tr');
 
             const comentarioTd = document.createElement('td');
@@ -99,10 +112,15 @@ document.addEventListener('DOMContentLoaded', async function() {
             facilidadTd.textContent = recomendacion.facilidad;
             row.appendChild(facilidadTd);
 
+            const materiaTd = document.createElement('td');
+            const materia = await fetchMateria(recomendacion.clave_materia);
+            materiaTd.textContent = materia.nombre;
+            row.appendChild(materiaTd);
+
             tableBody.appendChild(row);
 
             recomendacionesIds.push(recomendacion.id);
-        });
+        }
     }
     
     if (recomendacionesIds) {

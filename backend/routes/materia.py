@@ -25,3 +25,10 @@ async def read_materias(skip: int = 0, limit: Optional[int] = None, db: Session 
     materias = query.all()
     return materias
 
+
+@router.get("/materias/{clave_materia}", response_model=Materia)
+async def read_materia(clave_materia: str, db: Session = Depends(get_db)):
+    materia = db.query(MateriaModel).filter(MateriaModel.clave == clave_materia).first()
+    if not materia:
+        raise HTTPException(status_code=404, detail="Materia not found")
+    return materia
