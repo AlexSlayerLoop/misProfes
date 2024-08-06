@@ -58,16 +58,12 @@ const loadProfesoresTable = function(profesores){
         const nombreProfesorTd = document.createElement('td');
 
         const linkParaCalificar = document.createElement('a');
-        linkParaCalificar.innerHTML = profesor.apellidos;
+        linkParaCalificar.innerHTML = profesor.apellidos + ' ' + profesor.nombres;
         linkParaCalificar.classList.add('calificar-link')
         linkParaCalificar.href = 'recomendaciones.html?profesor_id=' + profesor.id + 
         '&profesor_apellidos=' + profesor.apellidos.replace(' ', '_') + 
         '&profesor_nombres=' + profesor.nombres.replace(' ', '_');
         nombreProfesorTd.appendChild(linkParaCalificar);
-        
-        const nombresSpan = document.createElement('span');
-        nombresSpan.textContent = ', ' + profesor.nombres;
-        nombreProfesorTd.appendChild(nombresSpan);
         
         row.appendChild(nombreProfesorTd);
 
