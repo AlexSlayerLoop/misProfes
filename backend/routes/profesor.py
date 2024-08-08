@@ -18,7 +18,7 @@ def get_db():
         db.close()
         
 
-@router.get("/profesores/", response_model=List[Profesor])
+@router.get("/profesores", response_model=List[Profesor])
 async def read_profesores(skip: int = 0, limit: Optional[int] = None, db: Session = Depends(get_db)):
     query = db.query(
         ProfesorModel.id,
@@ -66,7 +66,7 @@ async def read_profesor(profesor_id: int, db: Session = Depends(get_db)):
     return profesor
 
 
-@router.post("/profesores/", response_model=Profesor)
+@router.post("/profesores", response_model=Profesor)
 async def create_profesor(profesor: ProfesorCreate, db: Session = Depends(get_db)):
     db_profesor = ProfesorModel(nombres=profesor.nombres, apellidos=profesor.apellidos)
     db.add(db_profesor)

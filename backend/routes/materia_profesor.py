@@ -18,7 +18,7 @@ def get_db():
         db.close()
 
 
-@router.post("/materias_profesores/", response_model=MateriaProfesor)
+@router.post("/materias_profesores", response_model=MateriaProfesor)
 async def create_materia_profesor(materia_profesor: MateriaProfesorCreate, db: Session = Depends(get_db)):
     db_materia_profesor = MateriaProfesorModel(clave_materia=materia_profesor.clave_materia, id_profesor=materia_profesor.id_profesor)
     db.add(db_materia_profesor)
