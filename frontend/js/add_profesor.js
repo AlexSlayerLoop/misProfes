@@ -1,22 +1,4 @@
-const postProfesor = async function(profesor) {
-    const options = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(profesor)
-    };
-    try {
-        const response = await fetch('http://localhost:8000/profesores/', options);
-        if (!response.ok) {
-            throw new Error('Respuesta de red incorrecta.Estado: ' + response.status);
-        }
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error(error);
-    }
-};
+import { postData } from "./requests.js";
 
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('#profesor-form');
@@ -29,7 +11,8 @@ document.addEventListener('DOMContentLoaded', function() {
             nombres: nombres
         }
         
-        await postProfesor(profesor);
+        await postData('http://localhost:8000/profesores', profesor);
+
         window.location.href = 'index.html'
 
     });

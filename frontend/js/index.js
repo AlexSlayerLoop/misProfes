@@ -1,53 +1,55 @@
-const fetchProfesores = async function() {
-    try {
-        const response = await fetch('http://localhost:8000/profesores/');
-        if (!response.ok) {
-            throw new Error('Respuesta de red incorrecta.Estado: ' + response.status);
-        }
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error(error);
+import { fetchData } from "./requests.js";
+
+document.addEventListener('DOMContentLoaded', async function() {
+    const selectMateriaInput = document.querySelector('#materia');
+    
+    //Obtener todas las materias de la base de datos
+    const materias = await fetchData('http://localhost:8000/materias')
+
+    //Crear opciones para selectMateriaInput
+    if(materias){
+        materias.forEach(materia => {
+            const option = document.createElement('option');
+            option.value = materia.clave;
+            option.textContent = materia.nombre;
+            selectMateriaInput.appendChild(option);
+        });
     }
+
+    selectMateriaInput.addEventListener('change', async function(){
+        await updateProfesoresTable(selectMateriaInput.value);
+    });
+
+    await updateProfesoresTable(selectMateriaInput.value);
+  
+    //Search bar
+    document.getElementById('search-input').addEventListener('input', function() {
+        const query = this.value.toLowerCase();
+        filterResults(query);
+    });
+});
+
+const updateProfesoresTable = async function(claveMateria){
+    resetProfesorTable();
+    let profesores;
+    if(claveMateria){
+        profesores = [];
+        const profesoresMateria =  await fetchData('http://localhost:8000/materias_profesores', claveMateria);
+        for(const profesorMateria of profesoresMateria){
+            const profesor = await fetchData('http://localhost:8000/profesores', profesorMateria.id_profesor);
+            if(profesor){
+                profesores.push(profesor);
+            }
+        }
+    } else {
+        profesores = await fetchData('http://localhost:8000/profesores');
+    }
+    loadProfesoresTable(profesores);
 };
 
-const fetchMaterias = async function(){
-    try{
-        const response = await fetch('http://localhost:8000/materias');
-        if(!response.ok){
-            throw new Error('Respuesta de red incorrecta.Estado: ' + response.status);
-        }
-        const data = await response.json();
-        return data;
-    } catch (error){
-        console.error(error);
-    }
-};
-
-const fetchProfesoresByMateria = async function(claveMateria){
-    try{
-        const response = await fetch(`http://localhost:8000/materias_profesores/${claveMateria}`);
-        if(!response.ok){
-            throw new Error('Respuesta de red incorrecta.Estado: ' + response.status);
-        }   
-        const data = await response.json();
-        return data;    
-    } catch(error){
-        console.error(error);
-    } 
-};
-
-const fetchProfesor = async function(profesorId) {
-    try{
-        const response = await fetch(`http://localhost:8000/profesores/${profesorId}`);
-        if(!response.ok){
-            throw new Error('Respuesta de red incorrecta.Estado: ' + response.status);
-        }
-        const data = await response.json();
-        return data;
-    } catch(error){
-        console.error(error);
-    }
+const resetProfesorTable = function(){
+    const tableBody = document.querySelector('.profesor-table tbody');
+    tableBody.innerHTML = '';
 };
 
 const loadProfesoresTable = function(profesores){
@@ -82,27 +84,6 @@ const loadProfesoresTable = function(profesores){
     });
 };
 
-const resetProfesorTable = function(){
-    const tableBody = document.querySelector('.profesor-table tbody');
-    tableBody.innerHTML = '';
-};
-
-const updateProfesoresTable = async function(claveMateria){
-    resetProfesorTable();
-    let profesores;
-    if(claveMateria){
-        profesores = [];
-        const profesoresMateria = await fetchProfesoresByMateria(claveMateria);
-        for(const profesorMateria of profesoresMateria){
-            const profesor = await fetchProfesor(profesorMateria.id_profesor);
-            profesores.push(profesor);
-        }
-    } else {
-        profesores = await fetchProfesores();
-    }
-    loadProfesoresTable(profesores);
-};
-
 const filterResults = function(query) {
     const rows = document.querySelectorAll('.profesor-table tbody tr');
     rows.forEach(row => {
@@ -115,27 +96,3 @@ const filterResults = function(query) {
         }
     });
 };
-
-document.addEventListener('DOMContentLoaded', async function() {
-    const materias = await fetchMaterias();
-    const selectMateriaInput = document.querySelector('#materia');
-    if(materias){
-        materias.forEach(materia => {
-            const option = document.createElement('option');
-            option.value = materia.clave;
-            option.textContent = materia.nombre;
-            selectMateriaInput.appendChild(option);
-        });
-    }
-
-    selectMateriaInput.addEventListener('change', async function(){
-        await updateProfesoresTable(selectMateriaInput.value);
-    });
-
-    await updateProfesoresTable(selectMateriaInput.value);
-  
-    document.getElementById('search-input').addEventListener('input', function() {
-        const query = this.value.toLowerCase();
-        filterResults(query);
-    });
-});

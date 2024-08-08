@@ -1,73 +1,10 @@
+import { fetchData } from './requests.js';
+
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const profesorId = urlParams.get('profesor_id');
 const profesorApellidos = urlParams.get('profesor_apellidos')
 const profesorNombres = urlParams.get('profesor_nombres')
-
-const fetchRecomendaciones = async function(profesorId) {
-    try {
-        const response = await fetch('http://localhost:8000/profesor/' + profesorId + '/recomendaciones');
-        if (!response.ok) {
-            throw new Error('Respuesta de red incorrecta.Estado: ' + response.status);
-        }
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error(error);
-    }
-};
-
-const fetchProfesor = async function(profesorId) {
-    try {
-        const response = await fetch('http://localhost:8000/profesores/' + profesorId)
-        if (!response.ok) {
-            throw new Error('Respuesta de red incorrecta.Estado: ' + response.status);
-        }
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error(error);
-    }
-};
-
-const fetchEtiquetasByRecomendacion = async function(recomendacionId) {
-    try {
-        const response = await fetch('http://localhost:8000/etiquetas_recomendaciones/' + recomendacionId);
-        if (!response.ok) {
-            throw new Error('Respuesta de red incorrecta.Estado: ' + response.status);
-        }
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error(error);
-    }
-};
-
-const fetchEtiqueta = async function(etiquetaId) {
-    try {
-        const response = await fetch('http://localhost:8000/etiqueta/' + etiquetaId);
-        if (!response.ok) {
-            throw new Error('Respuesta de red incorrecta.Estado: ' + response.status);
-        }
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error(error);
-    }
-};
-
-const fetchMateria = async function(claveMateria) {
-    try {
-        const response = await fetch('http://localhost:8000/materias/' + claveMateria);
-        if (!response.ok) {
-            throw new Error('Respuesta de red incorrecta.Estado: ' + response.status);
-        }
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error(error);
-    }
-};
 
 document.addEventListener('DOMContentLoaded', async function() {
     //Crear boton para calificar al profesor
@@ -85,7 +22,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     document.querySelector('#profesor-nombre').textContent = profesorApellidos.replace('_', ' ') + ', ' + profesorNombres.replace('_', ' ');
 
     //Mostrar las metricas del profesor
-    const profesor = await fetchProfesor(profesorId);
+    const profesor = await fetchData('http://localhost:8000/profesores', profesorId);
     if(profesor) {
         document.querySelector('.calidad-general .grade').textContent = profesor.promedio === 'None' ? '' : profesor.promedio;
         document.querySelector('.dificultad .grade').textContent = profesor.facilidad === 'None' ? '' : profesor.facilidad;
@@ -94,7 +31,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     //Otener los ids de cada recomendacion
     const recomendacionesIds = [];
 
-    const recomendaciones = await fetchRecomendaciones(profesorId);
+    const recomendaciones = await fetchData('http://localhost:8000/recomendaciones', profesorId);
     if(recomendaciones) {
         const tableBody = document.querySelector('.reviews-table tbody');
         for (const recomendacion of recomendaciones) {
@@ -113,7 +50,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             row.appendChild(facilidadTd);
 
             const materiaTd = document.createElement('td');
-            const materia = await fetchMateria(recomendacion.clave_materia);
+            const materia = await fetchData('http://localhost:8000/materias', recomendacion.clave_materia);
             materiaTd.textContent = materia.nombre;
             row.appendChild(materiaTd);
 
@@ -126,7 +63,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     if (recomendacionesIds) {
         const etiquetasCount = new Map();
         for(const recomendacionId of recomendacionesIds) {
-            const etiquetasRecomendaciones = await fetchEtiquetasByRecomendacion(recomendacionId);
+            const etiquetasRecomendaciones = await fetchData('http://localhost:8000/etiquetas_recomendaciones', recomendacionId);
             for(const etiquetaRecomendacion of etiquetasRecomendaciones) {
                 if (etiquetasCount.has(etiquetaRecomendacion.id_etiqueta)) {
                     etiquetasCount.set(etiquetaRecomendacion.id_etiqueta, etiquetasCount.get(etiquetaRecomendacion.id_etiqueta) + 1);
@@ -135,8 +72,9 @@ document.addEventListener('DOMContentLoaded', async function() {
                 }
             }
         }
+        
         for(const [etiquetaId, count] of etiquetasCount) {
-            const etiqueta = await fetchEtiqueta(etiquetaId);
+            const etiqueta = await fetchData('http://localhost:8000/etiquetas', etiquetaId);
 
             const etiquetaDiv = document.createElement('div');
             etiquetaDiv.classList.add('etiqueta');
