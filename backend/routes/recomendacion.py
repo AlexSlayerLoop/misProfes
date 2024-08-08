@@ -18,7 +18,7 @@ def get_db():
         db.close()
         
         
-@router.get("/profesor/{profesor_id}/recomendaciones", response_model=List[Recomendacion])
+@router.get("/recomendaciones/{profesor_id}", response_model=List[Recomendacion])
 async def read_recomendaciones(profesor_id: int, db: Session = Depends(get_db)):
     recomendaciones = db.query(RecomendacionModel).filter(RecomendacionModel.id_profesor == profesor_id).all()
     if not recomendaciones:
@@ -26,7 +26,7 @@ async def read_recomendaciones(profesor_id: int, db: Session = Depends(get_db)):
     return recomendaciones
 
 
-@router.post("/profesor/{profesor_id}/recomendacion", response_model=Recomendacion)
+@router.post("/recomendaciones/{profesor_id}", response_model=Recomendacion)
 async def create_recomendacion(profesor_id: int, recomendacion: RecomendacionCreate, db: Session = Depends(get_db)):
     db_recomendacion = RecomendacionModel(id_profesor=profesor_id, 
                                           clave_materia=recomendacion.clave_materia,

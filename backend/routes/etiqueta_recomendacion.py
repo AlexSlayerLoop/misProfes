@@ -27,7 +27,7 @@ async def read_etiquetas_by_recomendacion(recomendacion_id: int, skip: int = 0, 
     return etiquetas_recomendacion
 
 
-@router.post("/etiquetas_recomendaciones/", response_model=EtiquetaRecomendacion)
+@router.post("/etiquetas_recomendaciones", response_model=EtiquetaRecomendacion)
 async def create_etiqueta_recomendacion(etiqueta_recomendacion: EtiquetaRecomendacionCreate, db: Session = Depends(get_db)):
     db_etiqueta_recomendacion = EtiquetaRecomendacionModel(id_etiqueta=etiqueta_recomendacion.id_etiqueta, id_recomendacion=etiqueta_recomendacion.id_recomendacion)
     db.add(db_etiqueta_recomendacion)

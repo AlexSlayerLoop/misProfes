@@ -18,7 +18,7 @@ def get_db():
         
         
     
-@router.get("/etiqueta/{etiqueta_id}", response_model=Etiqueta)
+@router.get("/etiquetas/{etiqueta_id}", response_model=Etiqueta)
 async def read_etiqueta(etiqueta_id: int, db: Session = Depends(get_db)):
     etiqueta = db.query(EtiquetaModel).filter(EtiquetaModel.id == etiqueta_id).first()
     if etiqueta is None:
@@ -26,7 +26,7 @@ async def read_etiqueta(etiqueta_id: int, db: Session = Depends(get_db)):
     return etiqueta    
     
 
-@router.get("/etiquetas/", response_model=List[Etiqueta])
+@router.get("/etiquetas", response_model=List[Etiqueta])
 async def read_etiquetas(skip: int = 0, limit: Optional[int] = None, db: Session = Depends(get_db)):
     query = db.query(EtiquetaModel).offset(skip)
     if limit:

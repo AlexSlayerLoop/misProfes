@@ -17,7 +17,7 @@ def get_db():
         db.close()
         
         
-@router.get("/materias/", response_model=List[Materia])
+@router.get("/materias", response_model=List[Materia])
 async def read_materias(skip: int = 0, limit: Optional[int] = None, db: Session = Depends(get_db)):
     query = db.query(MateriaModel).offset(skip)
     if limit:
