@@ -55,28 +55,21 @@ const loadProfesoresTable = function(profesores){
     profesores.forEach(profesor => {
         const row = document.createElement('tr');
         
-        const apellidosTd = document.createElement('td');
-        apellidosTd.textContent = profesor.apellidos;
-        row.appendChild(apellidosTd);
+        const nombreProfesorTd = document.createElement('td');
 
-        const nombresTd = document.createElement('td');
-        nombresTd.textContent = profesor.nombres;
-        row.appendChild(nombresTd);
+        const linkParaCalificar = document.createElement('a');
+        linkParaCalificar.innerHTML = profesor.apellidos + ' ' + profesor.nombres;
+        linkParaCalificar.classList.add('calificar-link')
+        linkParaCalificar.href = 'recomendaciones.html?profesor_id=' + profesor.id + 
+        '&profesor_apellidos=' + profesor.apellidos.replace(' ', '_') + 
+        '&profesor_nombres=' + profesor.nombres.replace(' ', '_');
+        nombreProfesorTd.appendChild(linkParaCalificar);
+        
+        row.appendChild(nombreProfesorTd);
 
         const promedioTd = document.createElement('td');
         promedioTd.textContent = profesor.promedio;
         row.appendChild(promedioTd);
-
-        const calificarTd = document.createElement('td');
-        const link = document.createElement('a');
-        link.href = "recomendaciones.html?profesor_id=" + profesor.id + 
-        "&profesor_apellidos=" + profesor.apellidos.replace(' ', '_') + 
-        "&profesor_nombres=" + profesor.nombres.replace(' ', '_');
-
-        link.textContent = 'Calificar';
-        link.classList.add('calificar-link');
-        calificarTd.appendChild(link);
-        row.appendChild(calificarTd);
 
         tableBody.appendChild(row);
     });
