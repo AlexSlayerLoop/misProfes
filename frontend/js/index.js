@@ -3,18 +3,14 @@ import { fetchData } from "./requests.js";
 document.addEventListener('DOMContentLoaded', async function() {
     const selectMateriaInput = document.querySelector('#materia');
     
-    //Obtener todas las materias de la base de datos
     const materias = await fetchData('http://localhost:8000/materias')
 
-    //Crear opciones para selectMateriaInput
-    if(materias){
-        materias.forEach(materia => {
-            const option = document.createElement('option');
-            option.value = materia.clave;
-            option.textContent = materia.nombre;
-            selectMateriaInput.appendChild(option);
-        });
-    }
+    materias.forEach(materia => {
+        const option = document.createElement('option');
+        option.value = materia.clave;
+        option.textContent = materia.nombre;
+        selectMateriaInput.appendChild(option);
+    });
 
     selectMateriaInput.addEventListener('change', async function(){
         await updateProfesoresTable(selectMateriaInput.value);
@@ -22,7 +18,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     await updateProfesoresTable(selectMateriaInput.value);
   
-    //Search bar
     document.getElementById('search-input').addEventListener('input', function() {
         const query = this.value.toLowerCase();
         filterResults(query);
@@ -37,9 +32,7 @@ const updateProfesoresTable = async function(claveMateria){
         const profesoresMateria =  await fetchData('http://localhost:8000/materias_profesores', claveMateria);
         for(const profesorMateria of profesoresMateria){
             const profesor = await fetchData('http://localhost:8000/profesores', profesorMateria.id_profesor);
-            if(profesor){
-                profesores.push(profesor);
-            }
+            profesores.push(profesor);
         }
     } else {
         profesores = await fetchData('http://localhost:8000/profesores');
