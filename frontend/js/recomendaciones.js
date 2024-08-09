@@ -7,57 +7,43 @@ const profesorApellidos = urlParams.get('profesor_apellidos')
 const profesorNombres = urlParams.get('profesor_nombres')
 
 document.addEventListener('DOMContentLoaded', async function() {
-    //Crear boton para calificar al profesor
-    const calificarLink = document.createElement('a');
+    const calificarLink = document.querySelector('.calificar-profesor');
     calificarLink.href = "calificar.html?profesor_id=" + profesorId + 
             "&profesor_apellidos=" + profesorApellidos.replace(' ', '_') + 
             "&profesor_nombres=" + profesorNombres.replace(' ', '_');
-    calificarLink.textContent = 'Calificar';
-    calificarLink.classList.add('calificar-profesor');
-    const li = document.createElement('li');
-    li.appendChild(calificarLink);
-    document.querySelector('nav ul').appendChild(li);
 
-    //Mostrar el nombre del profesor
     document.querySelector('#profesor-nombre').textContent = profesorApellidos.replace('_', ' ') + ', ' + profesorNombres.replace('_', ' ');
 
-    //Mostrar las metricas del profesor
     const profesor = await fetchData('http://localhost:8000/profesores', profesorId);
-    if(profesor) {
-        document.querySelector('.calidad-general .grade').textContent = profesor.promedio === 'None' ? '' : profesor.promedio;
-        document.querySelector('.dificultad .grade').textContent = profesor.facilidad === 'None' ? '' : profesor.facilidad;
-    }
+    document.querySelector('.calidad-general .grade').textContent = profesor.promedio === 'None' ? '' : profesor.promedio;
+    document.querySelector('.dificultad .grade').textContent = profesor.facilidad === 'None' ? '' : profesor.facilidad;
     
-    //Otener los ids de cada recomendacion
     const recomendacionesIds = [];
 
     const recomendaciones = await fetchData('http://localhost:8000/recomendaciones', profesorId);
-    if(recomendaciones) {
-        const tableBody = document.querySelector('.reviews-table tbody');
-        for (const recomendacion of recomendaciones) {
-            const row = document.createElement('tr');
+    for (const recomendacion of recomendaciones) {
+        const row = document.createElement('tr');
 
-            const comentarioTd = document.createElement('td');
-            comentarioTd.textContent = recomendacion.comentario;
-            row.appendChild(comentarioTd);
+        const comentarioTd = document.createElement('td');
+        comentarioTd.textContent = recomendacion.comentario;
+        row.appendChild(comentarioTd);
 
-            const calificacionTd = document.createElement('td');
-            calificacionTd.textContent = recomendacion.calificacion;
-            row.appendChild(calificacionTd);
+        const calificacionTd = document.createElement('td');
+        calificacionTd.textContent = recomendacion.calificacion;
+        row.appendChild(calificacionTd);
 
-            const facilidadTd = document.createElement('td');
-            facilidadTd.textContent = recomendacion.facilidad;
-            row.appendChild(facilidadTd);
+        const facilidadTd = document.createElement('td');
+        facilidadTd.textContent = recomendacion.facilidad;
+        row.appendChild(facilidadTd);
 
-            const materiaTd = document.createElement('td');
-            const materia = await fetchData('http://localhost:8000/materias', recomendacion.clave_materia);
-            materiaTd.textContent = materia.nombre;
-            row.appendChild(materiaTd);
+        const materiaTd = document.createElement('td');
+        const materia = await fetchData('http://localhost:8000/materias', recomendacion.clave_materia);
+        materiaTd.textContent = materia.nombre;
+        row.appendChild(materiaTd);
 
-            tableBody.appendChild(row);
+        document.querySelector('.reviews-table tbody').appendChild(row);
 
-            recomendacionesIds.push(recomendacion.id);
-        }
+        recomendacionesIds.push(recomendacion.id);
     }
     
     if (recomendacionesIds) {
