@@ -7,52 +7,37 @@ const profesorApellidos = urlParams.get('profesor_apellidos')
 const profesorNombres = urlParams.get('profesor_nombres')
 
 document.addEventListener('DOMContentLoaded', async function(){
-    //Agregar link para volver a la página de recomendaciones
-    const li = document.createElement('li');
-    const link = document.createElement('a');
-    link.href = "recomendaciones.html?profesor_id=" + profesorId+ 
+    document.querySelector('.volver').href = "recomendaciones.html?profesor_id=" + profesorId+ 
                 "&profesor_apellidos=" + profesorApellidos + 
                 "&profesor_nombres=" + profesorNombres;
-    link.textContent = 'Volver';    
-    link.classList.add('volver');
-    li.appendChild(link);
-    document.querySelector('nav ul').appendChild(li);
-
-    //Mostrar el nombre del profesor que se esta calificando
+    
     document.querySelector('.form-container h2').textContent = 'Calificar a ' + 
     profesorApellidos.replace('_', ' ') + ', ' + 
     profesorNombres.replace('_', ' ');
 
-    /*  
-    Agregar materias al input tipo select para seleccionar la materia que el
-    profesor impartio al usuario que lo esta calificando
-     */
     const materias = await fetchData('http://localhost:8000/materias');
-    if(materias){
-        const selectMateriaInput = document.querySelector('#materia');
-        materias.forEach(materia => {
-            const option = document.createElement('option');
-            option.value = materia.clave;
-            option.textContent = materia.nombre;
-            selectMateriaInput.appendChild(option);
-        });
-    }
 
-    //Mostrar las etiquetas
+    const selectMateriaInput = document.querySelector('#materia');
+    materias.forEach(materia => {
+        const option = document.createElement('option');
+        option.value = materia.clave;
+        option.textContent = materia.nombre;
+        selectMateriaInput.appendChild(option);
+    });
+
     const etiquetas = await fetchData('http://localhost:8000/etiquetas');
-    if(etiquetas) {
-        const etiquetasContainer = document.querySelector('#etiquetas-container');
-        etiquetas.forEach(etiqueta => {
-            const label = document.createElement('label');
-            label.textContent = etiqueta.descripcion;
-            const input = document.createElement('input');
-            input.type = 'checkbox';
-            input.classList.add('etiqueta-checkbox');
-            input.id = etiqueta.id;
-            label.appendChild(input);
-            etiquetasContainer.appendChild(label);
-        });
-    }
+
+    const etiquetasContainer = document.querySelector('#etiquetas-container');
+    etiquetas.forEach(etiqueta => {
+        const label = document.createElement('label');
+        label.textContent = etiqueta.descripcion;
+        const input = document.createElement('input');
+        input.type = 'checkbox';
+        input.classList.add('etiqueta-checkbox');
+        input.id = etiqueta.id;
+        label.appendChild(input);
+        etiquetasContainer.appendChild(label);
+    });
 
     const form = document.querySelector('#calificar-profesor-form');
     form.addEventListener('submit', async function(event){
@@ -72,9 +57,6 @@ document.addEventListener('DOMContentLoaded', async function(){
             await postData('http://localhost:8000/materias_profesores', materiaProfesor);
         }
         
-        let recomendacionId;
-        let response;
-        
         const review = {
             comentario: comentarios,
             calificacion: calificaion,
@@ -82,12 +64,7 @@ document.addEventListener('DOMContentLoaded', async function(){
             clave_materia: materiaSeleccionada
         };
         
-        try{
-            response = await postData('http://localhost:8000/recomendaciones', review, profesorId);
-            recomendacionId = response.id;
-        } catch(error){
-            console.log(error);
-        }
+        const response = await postData('http://localhost:8000/recomendaciones', review, profesorId);
         
         const etiquetasSeleccionadas = [];
         document.querySelectorAll('.etiqueta-checkbox:checked').forEach(etiqueta => {
@@ -95,16 +72,13 @@ document.addEventListener('DOMContentLoaded', async function(){
         });
 
         if(etiquetasSeleccionadas){
+            const recomendacionId = response.id;
             for(const etiqueta of etiquetasSeleccionadas){
                 const etiquetasRecomendacion = {
                     id_etiqueta: etiqueta,
                     id_recomendacion: recomendacionId
                 };
-                try{
-                    await postData('http://localhost:8000/etiquetas_recomendaciones', etiquetasRecomendacion);
-                } catch(error){
-                    console.log(error);
-                }
+                await postData('http://localhost:8000/etiquetas_recomendaciones', etiquetasRecomendacion);
             }            
         }
 
