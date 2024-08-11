@@ -18,10 +18,12 @@ CREATE TABLE materias_profesores (
 CREATE TABLE recomendaciones (
   id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   id_profesor INTEGER NOT NULL,
+  clave_materia TEXT NOT NULL,
   comentario TEXT NOT NULL,
   calificacion INTEGER NOT NULL CHECK (calificacion >= 0 AND calificacion <= 10),
   facilidad INTEGER NOT NULL CHECK (facilidad >= 0 AND facilidad <= 10),
   FOREIGN KEY (id_profesor) REFERENCES profesores(id)
+  FOREIGN KEY (clave_materia) REFERENCES materias(clave)
 ) STRICT;
 CREATE TABLE etiquetas (
   id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,

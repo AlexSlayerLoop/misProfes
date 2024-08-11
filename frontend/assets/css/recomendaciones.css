@@ -1,0 +1,79 @@
+.profesor-info {
+    margin-bottom: 20px;
+}
+
+.profesor-info h3 {
+    margin: 0;
+    font-size: 24px;
+    color: #003366;
+}
+
+.profesor-info p {
+    margin: 0;
+    font-size: 18px;
+    color: #666;
+}
+
+.profesor-metrics {
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.profesor-metrics div {
+    margin-bottom: 10px;
+}
+
+.grade {
+    font-weight: bold;
+}
+
+.profesor-etiquetas {
+    margin-bottom: 20px;
+}
+
+.profesor-etiquetas h4 {
+    margin-bottom: 10px;
+}
+
+#etiquetas-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#etiquetas-container .etiqueta {
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin: 5px;
+    display: flex;
+    align-items: center;
+}
+
+#etiquetas-container .etiqueta .descripcion {
+    margin-right: 5px;
+    font-weight: bold;
+}
+
+#etiquetas-container .etiqueta .contador {
+    color: #555;
+}
+
+.reviews-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.reviews-table th, .reviews-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.reviews-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.reviews-table tr:hover {
+    background-color: #ddd;
+}
